@@ -1,35 +1,34 @@
 import React from 'react';
+import TodoList from "../components/TodoList";
+import { Todos } from "../types";
 
 class TodoScreen extends React.Component {
     input = React.createRef<HTMLInputElement>();
 
-    state = {
+    state: Todos = {
         todos: []
     };
 
-    addItem(e: React.FormEvent){
+    addItem = (e: React.FormEvent) => {
         e.preventDefault();
         const element = this.input.current;
-        if(element){
+        if (element) {
             this.setState({
                 todos: [
                     ...this.state.todos,
                     element.value
                 ]
-            })
+            });
+            element.value = '';
         }
-    }
+    };
 
-    render(){
+    render() {
         return (
             <div>
-                <input type="text" ref={this.input} data-testid="add-item" />
+                <input type="text" ref={this.input} data-testid="add-item"/>
                 <button data-testid="submit-item" onClick={this.addItem}>Add</button>
-                <div>
-                    {this.state.todos.map(todo => (
-                        <p>{todo}</p>
-                    ))}
-                </div>
+                <TodoList todos={this.state.todos} />
             </div>
         )
     }

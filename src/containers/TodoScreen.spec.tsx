@@ -1,19 +1,46 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
+import { queryAllByText } from '@testing-library/dom';
 import TodoScreen from "./TodoScreen";
 
-it('should type into the input and submit', () => {
-    const { queryByTestId }  = render(<TodoScreen />);
 
-    const input = queryByTestId('add-item') as HTMLInputElement;
-    const button = queryByTestId('submit-item') as HTMLButtonElement;
+describe("TodoScreen", () => {
 
-    expect(input).toBeTruthy();
-    expect(button).toBeTruthy();
+    let input : HTMLInputElement;
+    let button : HTMLButtonElement;
+    let list : HTMLDivElement;
 
-    input.value = 'asdadasd';
-    button.click();
+    beforeEach(() => {
 
-    // TODO: Check redux for new items
+        const { queryByTestId }  = render(<TodoScreen />);
+        input = queryByTestId('add-item') as HTMLInputElement;
+        button = queryByTestId('submit-item') as HTMLButtonElement;
+        list = queryByTestId('list') as HTMLDivElement;
+    });
 
+    afterEach(cleanup);
+
+    it('should type into the input and submit', () => {
+
+        expect(input).toBeTruthy();
+        expect(button).toBeTruthy();
+        expect(list).toBeTruthy();
+
+        input.value = 'Hello World';
+        button.click();
+
+        expect(queryAllByText(list, 'Hello World')).toHaveLength(1);
+    });
+
+    it('should clear input on submit', () => {
+
+        expect(input).toBeTruthy();
+        expect(button).toBeTruthy();
+
+        input.value = 'Hello World';
+        button.click();
+
+        expect(input.value).toEqual('');
+    });
 });
+

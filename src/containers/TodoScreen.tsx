@@ -9,14 +9,15 @@ class TodoScreen extends React.Component {
 
     addItem(e: React.FormEvent){
         e.preventDefault();
-        const element = this.input.current as HTMLInputElement;
-        console.log(element.value);
-        this.setState({
-            todos: [
-                ...this.state.todos,
-                element.value
-            ]
-        })
+        const element = this.input.current;
+        if(element){
+            this.setState({
+                todos: [
+                    ...this.state.todos,
+                    element.value
+                ]
+            })
+        }
     }
 
     render(){
